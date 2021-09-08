@@ -1,6 +1,5 @@
 ;Hunter Long
-;mia014
-;CS-3723-01T
+;CS-3723
 ;Assignment 5
 ;July 24th, 2021
 
