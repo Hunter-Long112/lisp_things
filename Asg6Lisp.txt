@@ -1,0 +1,20 @@
+;Hunter Long
+;mia014
+;CS3723-01T
+;Assignment 6
+;July 31st, 2021
+
+;Simple macro that sets initials value to the sum of initial and inc
+(defmacro += (initial inc) `(setf ,initial (+ ,initial ,inc)))
+
+;Macro that uses the do function to complete the desired iteration. First creates unique names for 
+;endValue and incValue so that users body code can't change those values. Second sets i, endValue, and
+;incValue to user values. Finally, iterates using the do function to execute the users body code
+;through the desired iteration pattern.   
+(defmacro iterate (i beginValue tempEnd tempInc &rest body)
+	(let ( (endValue (gensym)) (incValue (gensym)) ) 
+	`(do ( (i ,beginValue) (,endValue ,tempEnd) (,incValue ,tempInc) )  
+		((> i ,endValue) T)
+		,@body
+		(+= i ,incValue)
+	 )))

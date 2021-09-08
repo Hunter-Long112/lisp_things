@@ -1,0 +1,56 @@
+;Hunter Long
+;mia014
+;CS-3723-01T
+;Assignment 5
+;July 24th, 2021
+
+;This is my implementation of removeNILTop, which is passed a list l. It first checks the base case (if l is empty),
+;then it checks if the first element in l is NIL (if it is it recursively calls itself passing the cdr of l). Finally,
+;if l is not empty and the first element is not NIL, it cons the element into the new list and again recursively 
+;calls itself.
+
+(defun removeNILTop (l) (cond ((null l) NIL)
+                              ((null (car l)) (removeNILTop (cdr l)))
+                              (T (cons (car l) (removeNILTop (cdr l))))))
+
+
+;This is my implementation of removeNILMost, which is also passed a list l. It does the same thing as removNILTop, 
+;except if the first element of l is a list instead of just adding it to the new list, it goes into these "sub-lists"
+;and passes them to removeNILMost as well.
+
+(defun removeNILMost (l) (cond ((null l) NIL)
+                               ((null (car l)) (removeNILMost (cdr l)))
+                               ((listp (car l)) (cons (removeNILMost (car l)) (removeNILMost (cdr l))))
+                               (T (cons (car l) (removeNILMost (cdr l))))))
+
+
+;This is my implementation of reverseTop, which is passes a list l. First, it checks the base case (if there is more than one 
+;in l), then it recursively calls itself passing the cdr of l, and appends the car of the current l to the reversed list. This 
+;effectively builds the original list from right to left (reverse order).
+
+(defun reverseTop (l) (cond ((null (cdr l)) (list (car l)))                            
+                            (T (append (reverseTop (cdr l)) (list (car l))))))
+
+
+;This is my implementation of reverseAll, which is passed a list l. It does the same thing as reverseTop except if the current
+;car of l is a list it will pass that element to reverseAll so it too will be reversed.
+
+(defun reverseAll (l) (cond ((null (cdr l)) (list (car l)))
+                            ((and (listp (car l)) (> (length (car l)) 1)) (append (reverseAll (cdr l)) (list (reverseAll (car l)))))
+                            (T (append (reverseAll (cdr l)) (list (car l))))))
+
+
+;This is my implementation of the function last1 that we went over in the notes. It is passed a list l and returns the last 
+;element in it.
+
+(defun last1 (l) (setf x (reverseTop l)) (cond (T (car x))))
+
+
+;This is my implementation of palindrome. It is passed a list l, and checks to see if it is a palindrome. It does this by 
+;checking to see if the first and last letter are the same, then recursively calles itself passing l without the first or last
+;letter. If they are ever not equal it returns NIL, if it gets all the way down to the last letter (or no letters left) it returns
+;true.
+
+(defun palindrome (l) (cond ((<= (length l) 1) T)
+                            ((equal (car l) (last1 l)) (palindrome (cdr (reverseTop (cdr (reverseTop l))))))
+                            (T NIL)))
